@@ -70,6 +70,8 @@ public class UserServiceImpl implements UserService {
 		case CUSTOMER ->user = new Customer();
 		}
 		
+		System.out.println(user);
+		
 		if(user != null)
 		{
 			user.setUserRole(userRole);
@@ -89,14 +91,13 @@ public class UserServiceImpl implements UserService {
 		messageData.setSentDate(new Date(System.currentTimeMillis()));
 		
 		
+		try {
+			mailService.sendMail(messageData);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
 		
-			try {
-				mailService.sendMail(messageData);
-			} catch (MessagingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		 
+			System.out.println(user);
 		
 		
 		return ResponseEntity.status(HttpStatus.ACCEPTED)
@@ -106,19 +107,22 @@ public class UserServiceImpl implements UserService {
 						.setStatus(HttpStatus.ACCEPTED.value()));
 	}
 	
+	
+	// for extracting the name from the email id
 	public String extractUsername(String email)
 	{
-		 if (email == null || !email.contains("@gmail.com")) {
-	            throw new IllegalArgumentException("Invalid Gmail address");
-	        }
-	        
-	        int atIndex = email.indexOf("@");
-	        if (atIndex == -1) {
-	            throw new IllegalArgumentException("Invalid email address format");
-	        }
-	        
-	        return email.substring(0, atIndex);
+		if (email == null || !email.contains("@gmail.com")) {
+            throw new IllegalArgumentException("Invalid Gmail address");
+        }
+        
+        int atIndex = email.indexOf("@");
+        if (atIndex == -1) {
+            throw new IllegalArgumentException("Invalid email address format");
+        }
+        
+        return email.substring(0, atIndex);
 	}
+		 
 
 	@Override
 	public ResponseEntity<ResponseStructure<UserResponse>> verifyOtp(OtpVerificationRequest otpVerificationRequest) {
@@ -142,9 +146,12 @@ public class UserServiceImpl implements UserService {
 			
 			String name =extractUsername(otpVerificationRequest.getEmail());
 			
+			
+			
 			user.setUsername(name);
 			user.setEmailVerified(true);
 			userRepository.save(user);
+
 			
 			return ResponseEntity.status(HttpStatus.CREATED)
 					.body(new ResponseStructure<UserResponse>()
@@ -155,12 +162,8 @@ public class UserServiceImpl implements UserService {
 		}
 		
 		else
-		{
-			return ResponseEntity.status(HttpStatus.NOT_FOUND)
-					.body(new ResponseStructure<UserResponse>()
-							.setMessage("Invalid otp")
-							.setStatus(HttpStatus.NOT_FOUND.value()));
-		}
+			throw new IllegalArgumentException("Invalid otp entered");
+		
 	}
 
 }
