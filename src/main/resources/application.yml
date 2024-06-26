@@ -15,7 +15,8 @@ spring:
  #SMTP Configuration
   mail:
     host: smtp.gmail.com
-    username: ${mail.username}
+    port: 587
+    username: ${mail.username} 
     password: ${mail.password}
     properties:
       mail:
@@ -23,4 +24,4 @@ spring:
           starttls:
             enable: true
             required: true
-            port: 587
+            

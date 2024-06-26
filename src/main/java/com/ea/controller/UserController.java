@@ -31,6 +31,7 @@ public class UserController {
 	@PostMapping("/sellers")
 	public ResponseEntity<ResponseStructure<UserResponse>> addSeller(@RequestBody UserRequest userRequest)
 	{
+		
 		return userService.addUser(userRequest, UserRole.SELLER);
 	}
 	
