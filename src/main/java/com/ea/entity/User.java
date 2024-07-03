@@ -1,5 +1,7 @@
 package com.ea.entity;
 
+import java.util.List;
+
 import com.ea.enums.UserRole;
 
 import jakarta.persistence.Entity;
@@ -10,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,5 +38,11 @@ public class User {
 	private String password;
 	private boolean isEmailVerified;
 	private boolean isDeleted;
+	
+//	@OneToMany
+//	private List<AccessToken> tokens;
+//	
+//	@OneToMany
+//	private List<RefreshToken> reftokens;
 
 }

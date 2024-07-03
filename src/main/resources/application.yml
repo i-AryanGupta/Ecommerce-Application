@@ -18,10 +18,20 @@ spring:
     port: 587
     username: ${mail.username} 
     password: ${mail.password}
-    properties:
+    properties:   
       mail:
         smtp:
           starttls:
             enable: true
             required: true
+            
+application:
+   jwt:
+      secret: ${jwt.secret}
+      access_expiry_seconds: 3600
+      refresh_expiry_seconds: 1296000
+   cookie:
+      domain: localhost
+      samesite: Lax
+      secure: false
             
